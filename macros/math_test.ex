@@ -20,4 +20,12 @@ defmodule MathTest do
   test "something false" do
     assert false
   end
+
+  test "refute" do
+    refute 1 == 2
+  end
+
+  test "refute something true" do
+    refute 1 == 1
+  end
 end

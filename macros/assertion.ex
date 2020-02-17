@@ -10,6 +10,12 @@ defmodule Assertion do
     end
   end
 
+  defmacro refute(expression) do
+    quote bind_quoted: [e: expression] do
+      fn -> Assertion.Test.refute(e) end
+    end
+  end
+
   defmacro __using__(_options) do
     quote do
       import unquote(__MODULE__)
@@ -89,13 +95,23 @@ defmodule Assertion.Test do
       """}
   end
 
-  def assert(expression) when expression == true do
+  def assert(true) do
     :ok
   end
-  def assert(expression) do
+  def assert(false) do
     {:fail, """
-      Expected: #{expression}
+      Expected: false
       To be true
+      """}
+  end
+
+  def refute(false) do
+    :ok
+  end
+  def refute(true) do
+    {:fail, """
+      Expected: true
+      To be false
       """}
   end
 end
